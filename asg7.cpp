@@ -1,18 +1,11 @@
 #include <GL/glut.h>
 #include <iostream>
 
-int windowWidth = 800;
-int windowHeight = 600;
-
 int menuID;
 int submenuID;
 
 // Variables for Koch curve
 int kochLevel = 0;
-
-// Variables for Bezier curve
-int numControlPoints = 0;
-GLfloat controlPoints[10][2];
 
 void drawKochCurve(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, int level) {
     if (level == 0) {
@@ -37,24 +30,12 @@ void drawKochCurve(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, int level) {
     }
 }
 
-void drawBezierCurve() {
-    glBegin(GL_LINE_STRIP);
-    for (int i = 0; i <= numControlPoints; ++i) {
-        glVertex2f(controlPoints[i][0], controlPoints[i][1]);
-    }
-    glEnd();
-}
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Draw Koch curve
     glColor3f(1.0f, 0.0f, 0.0f);
     drawKochCurve(-0.8f, -0.5f, 0.8f, -0.5f, kochLevel);
-
-    // Draw Bezier curve
-    glColor3f(0.0f, 0.0f, 1.0f);
-    drawBezierCurve();
 
     glFlush();
 }
@@ -70,22 +51,6 @@ void processMenuEvents(int option) {
                 kochLevel = 0;
             }
             break;
-        case 3:
-            std::cout << "Enter the number of control points (2-10): ";
-            std::cin >> numControlPoints;
-            if (numControlPoints < 2) {
-                numControlPoints = 2;
-            } else if (numControlPoints > 10) {
-                numControlPoints = 10;
-            }
-            std::cout << "Enter the control points (x y):" << std::endl;
-            for (int i = 0; i < numControlPoints; ++i) {
-                std::cin >> controlPoints[i][0] >> controlPoints[i][1];
-            }
-            break;
-        case 4:
-            numControlPoints = 0;
-            break;
         case 5:
             exit(0);
     }
@@ -93,14 +58,9 @@ void processMenuEvents(int option) {
 }
 
 void createMenu() {
-    submenuID = glutCreateMenu(processMenuEvents);
+    menuID = glutCreateMenu(processMenuEvents);
     glutAddMenuEntry("Increase Level", 1);
     glutAddMenuEntry("Decrease Level", 2);
-
-    menuID = glutCreateMenu(processMenuEvents);
-    glutAddSubMenu("Koch Curve", submenuID);
-    glutAddMenuEntry("Set Bezier Control Points", 3);
-    glutAddMenuEntry("Clear Bezier Control Points", 4);
     glutAddMenuEntry("Exit", 5);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -117,15 +77,11 @@ void reshape(int width, int height) {
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(windowWidth, windowHeight);
+    glutInitWindowSize(800, 600);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Koch & Bezier Curves");
-
+    glutCreateWindow("Koch Curve");
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
     glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
-
     createMenu();
 
     glutMainLoop();
