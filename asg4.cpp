@@ -33,11 +33,11 @@ void boundaryFill(float x, float y, float* b, float* n) {
 void floodFill(float x, float y, float *b, float *n) {
 	glColor3f(0.0, 0.0, 0.0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2d(40, 440);
-	glVertex2d(600, 440);
+	glVertex2d(200, 200);    
+    glVertex2d(400, 200); 
 	glColor3f(0.0, 1.0, 1.0);
-	glVertex2d(600, 40);
-	glVertex2d(40, 40);
+	glVertex2d(400, 400);
+    glVertex2d(200, 400); 
 	glEnd();
 	float color[3];
 	glReadPixels(x, y, 1.0, 1.0, GL_RGB, GL_FLOAT, color);
@@ -47,6 +47,7 @@ void floodFill(float x, float y, float *b, float *n) {
 			glVertex2d(x, y);
 		glEnd();
 		glFlush();
+        floodFill(x, y, b, n);
 		floodFill(x + 1, y, b, n);
 		floodFill(x - 2, y, b, n);
 		floodFill(x, y + 1, b, n);
@@ -64,11 +65,11 @@ void myDisplay() {
 	glPointSize(2);
 	glColor3f(0.0, 0.0, 0.0);
 	glBegin(GL_LINE_LOOP);
-	glVertex2d(40, 440);
-	glVertex2d(600, 440);
-	glVertex2d(600, 40);
-	glVertex2d(40, 40);
-	glEnd();
+    glVertex2d(200, 200);    
+    glVertex2d(400, 200);  
+    glVertex2d(400, 400);
+    glVertex2d(200, 400); 
+    glEnd();
 	glFlush();
 }
 
