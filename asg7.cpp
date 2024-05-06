@@ -2,7 +2,6 @@
 #include <iostream>
 
 int menuID;
-int submenuID;
 
 // Variables for Koch curve
 int kochLevel = 0;
@@ -40,7 +39,7 @@ void display() {
     glFlush();
 }
 
-void processMenuEvents(int option) {
+void menu(int option) {
     switch (option) {
         case 1:
             kochLevel++;
@@ -57,24 +56,8 @@ void processMenuEvents(int option) {
     glutPostRedisplay();
 }
 
-void createMenu() {
-    menuID = glutCreateMenu(processMenuEvents);
-    glutAddMenuEntry("Increase Level", 1);
-    glutAddMenuEntry("Decrease Level", 2);
-    glutAddMenuEntry("Exit", 5);
-
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-}
-
-void reshape(int width, int height) {
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-1.0, 1.0, -1.0, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-}
-
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(800, 600);
@@ -82,8 +65,13 @@ int main(int argc, char** argv) {
     glutCreateWindow("Koch Curve");
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glutDisplayFunc(display);
-    createMenu();
+    
+    menuID = glutCreateMenu(menu);
+    glutAddMenuEntry("Increase Level", 1);
+    glutAddMenuEntry("Decrease Level", 2);
+    glutAddMenuEntry("Exit", 5);
 
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutMainLoop();
 
     return 0;
